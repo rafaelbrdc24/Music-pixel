@@ -1,0 +1,517 @@
+/* Reset e configurações básicas */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: auto;
+}
+
+/* Container principal */
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(90deg, #2d1b69 0%, #11998e 100%);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 2px solid #00d4ff;
+}
+
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Botões */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #00b894, #00a085);
+    color: white;
+}
+
+.btn-info {
+    background: linear-gradient(45deg, #fdcb6e, #e17055);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #a29bfe, #6c5ce7);
+    color: white;
+}
+
+/* Conteúdo principal */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Seções */
+.piano-roll-section,
+.drum-machine-section,
+.mixer-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    color: #00d4ff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Controles de tempo */
+.tempo-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.tempo-controls label {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.tempo-controls input,
+.tempo-controls select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #00d4ff;
+    border-radius: 5px;
+    padding: 8px 12px;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+}
+
+.tempo-controls input:focus,
+.tempo-controls select:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+}
+
+/* Piano Roll */
+.piano-roll-container {
+    display: flex;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 2px solid #00d4ff;
+    overflow: hidden;
+}
+
+.note-labels {
+    width: 80px;
+    background: rgba(0, 0, 0, 0.5);
+    border-right: 2px solid #00d4ff;
+}
+
+.note-label {
+    height: 20px;
+    padding: 2px 8px;
+    font-size: 12px;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.note-label:nth-child(odd) {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.piano-roll {
+    flex: 1;
+    height: 960px;
+    position: relative;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 212, 255, 0.1) 0px,
+            rgba(0, 212, 255, 0.1) 19px,
+            transparent 19px,
+            transparent 20px
+        );
+    overflow: hidden;
+}
+
+.grid-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.1) 0px,
+            rgba(255, 255, 255, 0.1) 49px,
+            transparent 49px,
+            transparent 50px
+        );
+}
+
+.notes-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.note {
+    position: absolute;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border: 1px solid #ff4757;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: 18px;
+}
+
+.note:hover {
+    background: linear-gradient(45deg, #ff8a80, #ff7675);
+    transform: scaleY(1.1);
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+}
+
+.note.selected {
+    background: linear-gradient(45deg, #00d4ff, #0984e3);
+    border-color: #74b9ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.note.dragging {
+    opacity: 0.7;
+    transform: scale(1.05);
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.6);
+}
+
+.playhead {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #ff6b6b;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+    z-index: 10;
+    transition: left 0.1s ease;
+}
+
+/* Timeline */
+.timeline {
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-top: 2px solid #00d4ff;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.beat-marker {
+    width: 50px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #00d4ff;
+    border-right: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Bateria */
+.drum-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.drum-track {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.drum-label {
+    width: 80px;
+    font-weight: bold;
+    color: #00d4ff;
+    text-align: center;
+}
+
+.drum-steps {
+    display: flex;
+    gap: 5px;
+}
+
+.step {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #00d4ff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.step:hover {
+    background: rgba(0, 212, 255, 0.2);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.step.active {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border-color: #ff4757;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+    animation: pulse 0.3s ease;
+}
+
+.step.active::after {
+    content: "♪";
+    color: white;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Mixer */
+.mixer-channels {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.channel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    min-width: 120px;
+}
+
+.channel-label {
+    font-weight: bold;
+    color: #00d4ff;
+    font-size: 14px;
+}
+
+.volume-slider {
+    width: 100px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.volume-value {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .piano-roll-container {
+        flex-direction: column;
+    }
+    
+    .note-labels {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        overflow-x: auto;
+    }
+    
+    .note-label {
+        min-width: 60px;
+        height: 100%;
+        border-right: 1px solid rgba(0, 212, 255, 0.2);
+        border-bottom: none;
+    }
+    
+    .piano-roll {
+        height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: 10px;
+    }
+    
+    .title {
+        font-size: 2rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 200px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .tempo-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .mixer-channels {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .channel {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Animações extras */
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); }
+}
+
+.glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #00d4ff, #0984e3);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #74b9ff, #00d4ff);
+}

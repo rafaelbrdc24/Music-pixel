@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Pixel - Criador de Música 16-bit</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎵 Music Pixel</h1>
+            <div class="controls">
+                <button id="playBtn" class="btn btn-primary">▶️ Play</button>
+                <button id="stopBtn" class="btn btn-secondary">⏹️ Stop</button>
+                <button id="saveBtn" class="btn btn-success">💾 Salvar</button>
+                <button id="loadBtn" class="btn btn-info">📁 Carregar</button>
+                <button id="exportBtn" class="btn btn-warning">🎧 Exportar</button>
+                <input type="file" id="fileInput" accept=".apm" style="display: none;">
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Piano Roll Section -->
+            <section class="piano-roll-section">
+                <div class="section-header">
+                    <h2>🎹 Piano Roll</h2>
+                    <div class="tempo-controls">
+                        <label for="tempo">BPM: </label>
+                        <input type="number" id="tempo" value="120" min="60" max="200">
+                        <label for="timeSignature">Compasso: </label>
+                        <select id="timeSignature">
+                            <option value="4/4">4/4</option>
+                            <option value="3/4">3/4</option>
+                            <option value="2/4">2/4</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="piano-roll-container">
+                    <div class="note-labels">
+                        <div class="note-label">C8</div>
+                        <div class="note-label">B7</div>
+                        <div class="note-label">A7</div>
+                        <div class="note-label">G7</div>
+                        <div class="note-label">F7</div>
+                        <div class="note-label">E7</div>
+                        <div class="note-label">D7</div>
+                        <div class="note-label">C7</div>
+                        <div class="note-label">B6</div>
+                        <div class="note-label">A6</div>
+                        <div class="note-label">G6</div>
+                        <div class="note-label">F6</div>
+                        <div class="note-label">E6</div>
+                        <div class="note-label">D6</div>
+                        <div class="note-label">C6</div>
+                        <div class="note-label">B5</div>
+                        <div class="note-label">A5</div>
+                        <div class="note-label">G5</div>
+                        <div class="note-label">F5</div>
+                        <div class="note-label">E5</div>
+                        <div class="note-label">D5</div>
+                        <div class="note-label">C5</div>
+                        <div class="note-label">B4</div>
+                        <div class="note-label">A4</div>
+                        <div class="note-label">G4</div>
+                        <div class="note-label">F4</div>
+                        <div class="note-label">E4</div>
+                        <div class="note-label">D4</div>
+                        <div class="note-label">C4</div>
+                        <div class="note-label">B3</div>
+                        <div class="note-label">A3</div>
+                        <div class="note-label">G3</div>
+                        <div class="note-label">F3</div>
+                        <div class="note-label">E3</div>
+                        <div class="note-label">D3</div>
+                        <div class="note-label">C3</div>
+                        <div class="note-label">B2</div>
+                        <div class="note-label">A2</div>
+                        <div class="note-label">G2</div>
+                        <div class="note-label">F2</div>
+                        <div class="note-label">E2</div>
+                        <div class="note-label">D2</div>
+                        <div class="note-label">C2</div>
+                        <div class="note-label">B1</div>
+                        <div class="note-label">A1</div>
+                        <div class="note-label">G1</div>
+                        <div class="note-label">F1</div>
+                        <div class="note-label">E1</div>
+                        <div class="note-label">D1</div>
+                        <div class="note-label">C1</div>
+                    </div>
+                    
+                    <div class="piano-roll" id="pianoRoll">
+                        <div class="grid-lines"></div>
+                        <div class="notes-container" id="notesContainer"></div>
+                        <div class="playhead" id="playhead"></div>
+                    </div>
+                    
+                    <div class="timeline" id="timeline">
+                        <div class="beat-marker">1</div>
+                        <div class="beat-marker">2</div>
+                        <div class="beat-marker">3</div>
+                        <div class="beat-marker">4</div>
+                        <div class="beat-marker">5</div>
+                        <div class="beat-marker">6</div>
+                        <div class="beat-marker">7</div>
+                        <div class="beat-marker">8</div>
+                        <div class="beat-marker">9</div>
+                        <div class="beat-marker">10</div>
+                        <div class="beat-marker">11</div>
+                        <div class="beat-marker">12</div>
+                        <div class="beat-marker">13</div>
+                        <div class="beat-marker">14</div>
+                        <div class="beat-marker">15</div>
+                        <div class="beat-marker">16</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Drum Machine Section -->
+            <section class="drum-machine-section">
+                <div class="section-header">
+                    <h2>🥁 Bateria</h2>
+                </div>
+                
+                <div class="drum-grid" id="drumGrid">
+                    <!-- Kick -->
+                    <div class="drum-track">
+                        <div class="drum-label">Kick</div>
+                        <div class="drum-steps" data-drum="kick">
+                            <div class="step" data-step="0"></div>
+                            <div class="step" data-step="1"></div>
+                            <div class="step" data-step="2"></div>
+                            <div class="step" data-step="3"></div>
+                            <div class="step" data-step="4"></div>
+                            <div class="step" data-step="5"></div>
+                            <div class="step" data-step="6"></div>
+                            <div class="step" data-step="7"></div>
+                            <div class="step" data-step="8"></div>
+                            <div class="step" data-step="9"></div>
+                            <div class="step" data-step="10"></div>
+                            <div class="step" data-step="11"></div>
+                            <div class="step" data-step="12"></div>
+                            <div class="step" data-step="13"></div>
+                            <div class="step" data-step="14"></div>
+                            <div class="step" data-step="15"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Snare -->
+                    <div class="drum-track">
+                        <div class="drum-label">Snare</div>
+                        <div class="drum-steps" data-drum="snare">
+                            <div class="step" data-step="0"></div>
+                            <div class="step" data-step="1"></div>
+                            <div class="step" data-step="2"></div>
+                            <div class="step" data-step="3"></div>
+                            <div class="step" data-step="4"></div>
+                            <div class="step" data-step="5"></div>
+                            <div class="step" data-step="6"></div>
+                            <div class="step" data-step="7"></div>
+                            <div class="step" data-step="8"></div>
+                            <div class="step" data-step="9"></div>
+                            <div class="step" data-step="10"></div>
+                            <div class="step" data-step="11"></div>
+                            <div class="step" data-step="12"></div>
+                            <div class="step" data-step="13"></div>
+                            <div class="step" data-step="14"></div>
+                            <div class="step" data-step="15"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hi-Hat -->
+                    <div class="drum-track">
+                        <div class="drum-label">Hi-Hat</div>
+                        <div class="drum-steps" data-drum="hihat">
+                            <div class="step" data-step="0"></div>
+                            <div class="step" data-step="1"></div>
+                            <div class="step" data-step="2"></div>
+                            <div class="step" data-step="3"></div>
+                            <div class="step" data-step="4"></div>
+                            <div class="step" data-step="5"></div>
+                            <div class="step" data-step="6"></div>
+                            <div class="step" data-step="7"></div>
+                            <div class="step" data-step="8"></div>
+                            <div class="step" data-step="9"></div>
+                            <div class="step" data-step="10"></div>
+                            <div class="step" data-step="11"></div>
+                            <div class="step" data-step="12"></div>
+                            <div class="step" data-step="13"></div>
+                            <div class="step" data-step="14"></div>
+                            <div class="step" data-step="15"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Crash -->
+                    <div class="drum-track">
+                        <div class="drum-label">Crash</div>
+                        <div class="drum-steps" data-drum="crash">
+                            <div class="step" data-step="0"></div>
+                            <div class="step" data-step="1"></div>
+                            <div class="step" data-step="2"></div>
+                            <div class="step" data-step="3"></div>
+                            <div class="step" data-step="4"></div>
+                            <div class="step" data-step="5"></div>
+                            <div class="step" data-step="6"></div>
+                            <div class="step" data-step="7"></div>
+                            <div class="step" data-step="8"></div>
+                            <div class="step" data-step="9"></div>
+                            <div class="step" data-step="10"></div>
+                            <div class="step" data-step="11"></div>
+                            <div class="step" data-step="12"></div>
+                            <div class="step" data-step="13"></div>
+                            <div class="step" data-step="14"></div>
+                            <div class="step" data-step="15"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mixer Section -->
+            <section class="mixer-section">
+                <div class="section-header">
+                    <h2>🎚️ Mixer</h2>
+                </div>
+                
+                <div class="mixer-channels">
+                    <div class="channel">
+                        <div class="channel-label">Melodia</div>
+                        <input type="range" class="volume-slider" id="melodyVolume" min="0" max="100" value="80">
+                        <span class="volume-value">80</span>
+                    </div>
+                    
+                    <div class="channel">
+                        <div class="channel-label">Kick</div>
+                        <input type="range" class="volume-slider" id="kickVolume" min="0" max="100" value="90">
+                        <span class="volume-value">90</span>
+                    </div>
+                    
+                    <div class="channel">
+                        <div class="channel-label">Snare</div>
+                        <input type="range" class="volume-slider" id="snareVolume" min="0" max="100" value="85">
+                        <span class="volume-value">85</span>
+                    </div>
+                    
+                    <div class="channel">
+                        <div class="channel-label">Hi-Hat</div>
+                        <input type="range" class="volume-slider" id="hihatVolume" min="0" max="100" value="70">
+                        <span class="volume-value">70</span>
+                    </div>
+                    
+                    <div class="channel">
+                        <div class="channel-label">Crash</div>
+                        <input type="range" class="volume-slider" id="crashVolume" min="0" max="100" value="75">
+                        <span class="volume-value">75</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="audio-engine.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
