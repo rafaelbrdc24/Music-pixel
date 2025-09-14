@@ -108,33 +108,8 @@ class MusicPixelApp {
             });
         });
         
-        // Piano roll
-        const pianoRoll = document.getElementById('pianoRoll');
-        if (pianoRoll) {
-            console.log('Piano roll encontrado, adicionando event listeners...');
-            
-            // Usar arrow function para manter o contexto 'this'
-            pianoRoll.addEventListener('click', (e) => {
-                console.log('Clique detectado no piano roll!');
-                this.handlePianoRollClick(e);
-            });
-            
-            pianoRoll.addEventListener('mousemove', (e) => {
-                this.handlePianoRollMouseMove(e);
-            });
-            
-            // Adicionar também no notes-container como fallback
-            const notesContainer = document.getElementById('notesContainer');
-            if (notesContainer) {
-                notesContainer.addEventListener('click', (e) => {
-                    console.log('Clique detectado no notes-container!');
-                    this.handlePianoRollClick(e);
-                });
-            }
-            
-        } else {
-            console.error('Elemento pianoRoll não encontrado!');
-        }
+        // Piano roll - agora é configurado no setupPianoRoll()
+        console.log('Piano roll será configurado no setupPianoRoll()');
         
         // Botão de teste
         const testBtn = document.getElementById('testBtn');
@@ -163,52 +138,44 @@ class MusicPixelApp {
         const pianoRoll = document.getElementById('pianoRoll');
         const notesContainer = document.getElementById('notesContainer');
         
-        // Criar grid visual
-        this.createPianoRollGrid();
-        
         // Configurar dimensões
         pianoRoll.style.width = this.gridWidth + 'px';
         pianoRoll.style.height = this.gridHeight + 'px';
         
-        // Adicionar event listener direto como fallback
-        pianoRoll.onclick = (e) => {
-            console.log('onclick direto chamado!');
-            this.handlePianoRollClick(e);
-        };
+        // Event listener MUITO simples
+        pianoRoll.addEventListener('click', (e) => {
+            console.log('🎹 CLIQUE NO PIANO ROLL!');
+            this.handleSimpleClick(e);
+        });
         
-        console.log('Piano roll configurado com onclick direto');
+        console.log('Piano roll simplificado configurado!');
+    }
+    
+    handleSimpleClick(e) {
+        if (!this.isInitialized) {
+            console.log('App não inicializado!');
+            return;
+        }
+        
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const step = Math.floor(x / this.stepWidth);
+        const noteIndex = Math.floor(y / this.noteHeight);
+        
+        console.log(`Posição: x=${x}, y=${y}, step=${step}, noteIndex=${noteIndex}`);
+        
+        if (step >= 0 && step < 16 && noteIndex >= 0 && noteIndex < 48) {
+            const noteName = this.getNoteNameFromIndex(noteIndex);
+            console.log(`✅ Adicionando: ${noteName} no step ${step}`);
+            this.addNote(noteName, step);
+        }
     }
     
     createPianoRollGrid() {
-        const notesContainer = document.getElementById('notesContainer');
-        
-        // Criar linhas horizontais (notas)
-        for (let i = 0; i < 48; i++) {
-            const line = document.createElement('div');
-            line.className = 'grid-horizontal-line';
-            line.style.position = 'absolute';
-            line.style.top = (i * this.noteHeight) + 'px';
-            line.style.left = '0';
-            line.style.right = '0';
-            line.style.height = '1px';
-            line.style.backgroundColor = i % 12 === 0 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)';
-            line.style.pointerEvents = 'none';
-            notesContainer.appendChild(line);
-        }
-        
-        // Criar linhas verticais (tempo)
-        for (let i = 0; i <= 16; i++) {
-            const line = document.createElement('div');
-            line.className = 'grid-vertical-line';
-            line.style.position = 'absolute';
-            line.style.left = (i * this.stepWidth) + 'px';
-            line.style.top = '0';
-            line.style.bottom = '0';
-            line.style.width = '1px';
-            line.style.backgroundColor = i % 4 === 0 ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.1)';
-            line.style.pointerEvents = 'none';
-            notesContainer.appendChild(line);
-        }
+        // Grid agora é feito apenas com CSS - muito mais simples!
+        console.log('Grid criado via CSS');
     }
     
     setupDrumMachine() {
@@ -248,60 +215,7 @@ class MusicPixelApp {
         });
     }
     
-    handlePianoRollClick(e) {
-        console.log('=== handlePianoRollClick chamado ===');
-        console.log('isInitialized:', this.isInitialized);
-        console.log('target:', e.target);
-        console.log('target classes:', e.target.classList);
-        
-        if (!this.isInitialized) {
-            console.log('App não inicializado ainda!');
-            return;
-        }
-        
-        // Verificar se o clique foi em uma nota existente
-        if (e.target.classList.contains('note')) {
-            console.log('Clique foi em uma nota existente, ignorando...');
-            return;
-        }
-        
-        // Obter posição do clique
-        const pianoRoll = document.getElementById('pianoRoll');
-        if (!pianoRoll) {
-            console.error('Piano roll não encontrado!');
-            return;
-        }
-        
-        const rect = pianoRoll.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        console.log(`Posição do clique: x=${x}, y=${y}`);
-        console.log(`Dimensões do piano roll: width=${rect.width}, height=${rect.height}`);
-        
-        // Calcular step e noteIndex
-        const step = Math.floor(x / this.stepWidth);
-        const noteIndex = Math.floor(y / this.noteHeight);
-        
-        console.log(`Calculado: step=${step}, noteIndex=${noteIndex}`);
-        console.log(`stepWidth: ${this.stepWidth}, noteHeight: ${this.noteHeight}`);
-        
-        // Validar posição
-        if (step >= 0 && step < 16 && noteIndex >= 0 && noteIndex < 48) {
-            const noteName = this.getNoteNameFromIndex(noteIndex);
-            console.log(`✅ Adicionando nota: ${noteName} no step ${step}`);
-            this.addNote(noteName, step);
-        } else {
-            console.log('❌ Posição fora dos limites válidos');
-            console.log(`Limites: step (0-15), noteIndex (0-47)`);
-        }
-        
-        console.log('=== Fim handlePianoRollClick ===');
-    }
-    
-    handlePianoRollMouseMove(e) {
-        // Implementar preview de notas ou outros efeitos visuais
-    }
+    // Funções complexas removidas - usando apenas handleSimpleClick
     
     handleDrumStepClick(e) {
         if (!this.isInitialized) return;

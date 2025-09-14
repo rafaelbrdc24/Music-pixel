@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Piano Roll Super Simples</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: white;
+            padding: 20px;
+        }
+        
+        .piano-roll {
+            width: 800px;
+            height: 400px;
+            background: #222;
+            border: 2px solid #00d4ff;
+            position: relative;
+            cursor: crosshair;
+        }
+        
+        .note {
+            position: absolute;
+            background: #ff6b6b;
+            border: 1px solid #ff4757;
+            border-radius: 3px;
+            height: 18px;
+        }
+        
+        .info {
+            margin: 20px 0;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎹 Teste Piano Roll Super Simples</h1>
+    
+    <div class="info">
+        <p><strong>Instruções:</strong></p>
+        <p>• Clique no piano roll para adicionar notas</p>
+        <p>• Cada clique adiciona uma nota vermelha</p>
+        <p>• Verifique o console para logs</p>
+    </div>
+    
+    <div class="piano-roll" id="pianoRoll">
+        <!-- Notas aparecerão aqui -->
+    </div>
+    
+    <div class="info">
+        <p id="status">Clique no piano roll para testar!</p>
+    </div>
+    
+    <script>
+        const pianoRoll = document.getElementById('pianoRoll');
+        const status = document.getElementById('status');
+        let noteCount = 0;
+        
+        pianoRoll.addEventListener('click', function(e) {
+            console.log('🎹 CLIQUE DETECTADO!');
+            
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            console.log(`Posição: x=${x}, y=${y}`);
+            
+            // Criar nota
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.style.left = x + 'px';
+            note.style.top = y + 'px';
+            note.style.width = '50px';
+            
+            this.appendChild(note);
+            
+            noteCount++;
+            status.textContent = `Nota ${noteCount} adicionada em (${Math.round(x)}, ${Math.round(y)})`;
+            
+            console.log(`✅ Nota ${noteCount} adicionada!`);
+        });
+        
+        console.log('Teste carregado e pronto!');
+    </script>
+</body>
+</html>

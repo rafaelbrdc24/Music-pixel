@@ -38,6 +38,7 @@ body {
     background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
     background-size: 400% 400%;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: gradientShift 3s ease infinite;
 }
@@ -193,30 +194,35 @@ body {
     background: rgba(0, 212, 255, 0.1);
 }
 
-.piano-roll {
+/* Piano Roll Simplificado */
+.piano-roll-simple {
     flex: 1;
     height: 960px;
     position: relative;
-    background: 
+    background: #222;
+    border: 2px solid #00d4ff;
+    cursor: crosshair;
+    user-select: none;
+}
+
+/* Grid visual simples */
+.piano-roll-simple::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        /* Linhas horizontais (notas) */
         repeating-linear-gradient(
             0deg,
             rgba(0, 212, 255, 0.1) 0px,
             rgba(0, 212, 255, 0.1) 19px,
             transparent 19px,
             transparent 20px
-        );
-    overflow: hidden;
-    cursor: crosshair;
-    user-select: none;
-}
-
-.grid-lines {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
+        ),
+        /* Linhas verticais (tempo) */
         repeating-linear-gradient(
             90deg,
             rgba(255, 255, 255, 0.1) 0px,
@@ -225,6 +231,7 @@ body {
             transparent 50px
         );
     pointer-events: none;
+    z-index: 1;
 }
 
 .notes-container {
@@ -397,6 +404,7 @@ body {
     border-radius: 4px;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 .volume-slider::-webkit-slider-thumb {
