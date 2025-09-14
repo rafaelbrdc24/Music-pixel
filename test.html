@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Piano Roll</title>
+    <style>
+        .piano-roll {
+            width: 800px;
+            height: 400px;
+            background: #333;
+            position: relative;
+            cursor: crosshair;
+        }
+        .note {
+            position: absolute;
+            background: red;
+            width: 50px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste Piano Roll</h1>
+    <div class="piano-roll" id="pianoRoll">
+        <div class="note" style="left: 100px; top: 50px;"></div>
+    </div>
+    
+    <script>
+        document.getElementById('pianoRoll').addEventListener('click', function(e) {
+            console.log('Clique detectado!', e);
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            console.log('Posição:', x, y);
+            
+            // Criar nova nota
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.style.left = x + 'px';
+            note.style.top = y + 'px';
+            this.appendChild(note);
+        });
+    </script>
+</body>
+</html>

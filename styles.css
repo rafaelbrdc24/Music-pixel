@@ -206,6 +206,8 @@ body {
             transparent 20px
         );
     overflow: hidden;
+    cursor: crosshair;
+    user-select: none;
 }
 
 .grid-lines {
@@ -222,6 +224,7 @@ body {
             transparent 49px,
             transparent 50px
         );
+    pointer-events: none;
 }
 
 .notes-container {

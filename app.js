@@ -16,11 +16,16 @@ class MusicPixelApp {
     
     async init() {
         try {
+            console.log('Iniciando Music Pixel...');
+            
             // Inicializar Audio Engine
+            console.log('Criando Audio Engine...');
             this.audioEngine = new AudioEngine();
             await this.audioEngine.init();
+            console.log('Audio Engine inicializado!');
             
             // Configurar interface
+            console.log('Configurando interface...');
             this.setupEventListeners();
             this.setupPianoRoll();
             this.setupDrumMachine();
@@ -28,6 +33,7 @@ class MusicPixelApp {
             
             this.isInitialized = true;
             console.log('Music Pixel inicializado com sucesso!');
+            console.log('isInitialized:', this.isInitialized);
             
             // Mostrar mensagem de boas-vindas
             this.showWelcomeMessage();
@@ -73,6 +79,8 @@ class MusicPixelApp {
     }
     
     setupEventListeners() {
+        console.log('Configurando event listeners...');
+        
         // Botões de controle
         document.getElementById('playBtn').addEventListener('click', () => this.togglePlayback());
         document.getElementById('stopBtn').addEventListener('click', () => this.stopPlayback());
@@ -101,8 +109,41 @@ class MusicPixelApp {
         });
         
         // Piano roll
-        document.getElementById('pianoRoll').addEventListener('click', (e) => this.handlePianoRollClick(e));
-        document.getElementById('pianoRoll').addEventListener('mousemove', (e) => this.handlePianoRollMouseMove(e));
+        const pianoRoll = document.getElementById('pianoRoll');
+        if (pianoRoll) {
+            console.log('Piano roll encontrado, adicionando event listeners...');
+            
+            // Usar arrow function para manter o contexto 'this'
+            pianoRoll.addEventListener('click', (e) => {
+                console.log('Clique detectado no piano roll!');
+                this.handlePianoRollClick(e);
+            });
+            
+            pianoRoll.addEventListener('mousemove', (e) => {
+                this.handlePianoRollMouseMove(e);
+            });
+            
+            // Adicionar também no notes-container como fallback
+            const notesContainer = document.getElementById('notesContainer');
+            if (notesContainer) {
+                notesContainer.addEventListener('click', (e) => {
+                    console.log('Clique detectado no notes-container!');
+                    this.handlePianoRollClick(e);
+                });
+            }
+            
+        } else {
+            console.error('Elemento pianoRoll não encontrado!');
+        }
+        
+        // Botão de teste
+        const testBtn = document.getElementById('testBtn');
+        if (testBtn) {
+            testBtn.addEventListener('click', () => {
+                console.log('Botão de teste clicado!');
+                this.addTestNote();
+            });
+        }
         
         // Bateria
         document.querySelectorAll('.step').forEach(step => {
@@ -114,6 +155,8 @@ class MusicPixelApp {
         
         // Teclado
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
+        
+        console.log('Event listeners configurados com sucesso!');
     }
     
     setupPianoRoll() {
@@ -126,6 +169,14 @@ class MusicPixelApp {
         // Configurar dimensões
         pianoRoll.style.width = this.gridWidth + 'px';
         pianoRoll.style.height = this.gridHeight + 'px';
+        
+        // Adicionar event listener direto como fallback
+        pianoRoll.onclick = (e) => {
+            console.log('onclick direto chamado!');
+            this.handlePianoRollClick(e);
+        };
+        
+        console.log('Piano roll configurado com onclick direto');
     }
     
     createPianoRollGrid() {
@@ -198,28 +249,54 @@ class MusicPixelApp {
     }
     
     handlePianoRollClick(e) {
-        if (!this.isInitialized) return;
+        console.log('=== handlePianoRollClick chamado ===');
+        console.log('isInitialized:', this.isInitialized);
+        console.log('target:', e.target);
+        console.log('target classes:', e.target.classList);
         
-        // Verificar se o clique foi no piano roll, não em uma nota existente
-        if (e.target.classList.contains('note')) {
+        if (!this.isInitialized) {
+            console.log('App não inicializado ainda!');
             return;
         }
         
+        // Verificar se o clique foi em uma nota existente
+        if (e.target.classList.contains('note')) {
+            console.log('Clique foi em uma nota existente, ignorando...');
+            return;
+        }
+        
+        // Obter posição do clique
         const pianoRoll = document.getElementById('pianoRoll');
+        if (!pianoRoll) {
+            console.error('Piano roll não encontrado!');
+            return;
+        }
+        
         const rect = pianoRoll.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
+        console.log(`Posição do clique: x=${x}, y=${y}`);
+        console.log(`Dimensões do piano roll: width=${rect.width}, height=${rect.height}`);
+        
+        // Calcular step e noteIndex
         const step = Math.floor(x / this.stepWidth);
         const noteIndex = Math.floor(y / this.noteHeight);
         
-        console.log(`Clique no piano roll: x=${x}, y=${y}, step=${step}, noteIndex=${noteIndex}`);
+        console.log(`Calculado: step=${step}, noteIndex=${noteIndex}`);
+        console.log(`stepWidth: ${this.stepWidth}, noteHeight: ${this.noteHeight}`);
         
+        // Validar posição
         if (step >= 0 && step < 16 && noteIndex >= 0 && noteIndex < 48) {
             const noteName = this.getNoteNameFromIndex(noteIndex);
-            console.log(`Adicionando nota: ${noteName} no step ${step}`);
+            console.log(`✅ Adicionando nota: ${noteName} no step ${step}`);
             this.addNote(noteName, step);
+        } else {
+            console.log('❌ Posição fora dos limites válidos');
+            console.log(`Limites: step (0-15), noteIndex (0-47)`);
         }
+        
+        console.log('=== Fim handlePianoRollClick ===');
     }
     
     handlePianoRollMouseMove(e) {
@@ -307,6 +384,21 @@ class MusicPixelApp {
             this.createPianoRollGrid();
             this.showNotification('Todas as notas foram removidas! 🗑️');
         }
+    }
+    
+    addTestNote() {
+        console.log('Adicionando nota de teste...');
+        console.log('isInitialized:', this.isInitialized);
+        console.log('audioEngine:', this.audioEngine);
+        
+        if (!this.isInitialized || !this.audioEngine) {
+            console.error('App não inicializado ou audioEngine não disponível!');
+            return;
+        }
+        
+        // Adicionar uma nota de teste no step 0, nota C4
+        this.addNote('C4', 0);
+        console.log('Nota de teste adicionada!');
     }
     
     getNoteNameFromIndex(index) {
@@ -756,5 +848,17 @@ document.head.appendChild(style);
 
 // Inicializar aplicação quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM carregado, criando aplicação...');
     window.musicPixelApp = new MusicPixelApp();
 });
+
+// Fallback caso o DOM já esteja carregado
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM carregado (fallback), criando aplicação...');
+        window.musicPixelApp = new MusicPixelApp();
+    });
+} else {
+    console.log('DOM já carregado, criando aplicação imediatamente...');
+    window.musicPixelApp = new MusicPixelApp();
+}
